@@ -12,6 +12,7 @@ export default class Test {
     updatePersonNameAsync() {
         setTimeout(() => {
             runInAction(() => {
+                console.log('begin')
                 this.person.name = 'Xiaoming 1000';
             });
         }, 300);

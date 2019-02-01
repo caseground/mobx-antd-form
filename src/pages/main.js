@@ -12,7 +12,7 @@ const form = Form.create({
         console.log('mapPropsToFields');
         return {
             name: Form.createFormField({
-                value: props.test.person.name
+                value: props.name
             })
         };
     },
@@ -46,19 +46,32 @@ const mockInput = function(name) {
     };
 };
 
-@inject(({ test }) => ({ test }))
+@inject(({ test }) => ({ 
+    name: test.person.name,
+    test: test
+}))
 @form
 @observer
 class PersonTest extends React.Component {
+    componentWillReceiveProps(props, nextprops){
+        console.log('PersonTest componentWillReceiveProps');
+        console.log(props, nextprops);
+    }
+
+    componentWillUpdate(props, nextprops){
+        console.log('PersonTest componentWillUpdate');
+        console.log(props, nextprops);
+    }
+
     handleInputChange = e => {
         console.log(e.currentTarget.value);
-        this.props.test.updatePersonName(e.currentTarget.value);
+        // this.props.test.updatePersonName(e.currentTarget.value);
     };
     render() {
         const { getFieldDecorator, getFieldValue } = this.props.form;
         console.log('render PersonTest', this.props);
-        let { person } = this.props.test;
-        let name = person.name || '';
+        let { name } = this.props;
+        // let name = person.name || '';
 
         return (
             <div>
@@ -84,6 +97,11 @@ class Test extends React.Component {
             </div>
         );
     }
+    componentWillReceiveProps(props, nextprops){
+        console.log('componentWillReceiveProps');
+        console.log(props, nextprops);
+    }
+
     componentDidMount() {
         this.props.test.updatePersonNameAsync();
     }
