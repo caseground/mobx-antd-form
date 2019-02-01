@@ -7,35 +7,6 @@ import hoistNonReactStatic from 'hoist-non-react-statics';
 import { observer, inject } from 'mobx-react';
 import './index.css';
 
-const ShallowArrayTest = React.memo(
-    observer(function ShallowArrayTest({ shallowArray }) {
-        console.log('render ShallowArrayTest');
-        return shallowArray.map(item => {
-            return <div key={item.name}>{item.name}</div>;
-        });
-    })
-);
-
-const RefArrayTest = React.memo(function RefArrayTest({ refArray }) {
-    console.log('render RefArrayTest');
-    return refArray.map(item => {
-        return <div key={item.name}>{item.name}</div>;
-    });
-});
-
-const StructArrayTest = React.memo(
-    observer(function StructArrayTest({ structArray }) {
-        console.log('render StructArrayTest');
-        return structArray.map(item => {
-            return <div key={item.name}>{item.name}</div>;
-        });
-    })
-);
-
-const ReactMemoTest = React.memo(function ReactMemoTest({ name }) {
-    console.log('render ReactMemoTest');
-    return <div>{name}</div>;
-});
 
 const form = Form.create({
     mapPropsToFields(props) {
@@ -78,13 +49,9 @@ const mockInput = function(name) {
 }
 
 @inject(({ test }) => ({ test }))
-@observer
 @form
 @observer
 class PersonTest extends React.Component {
-    componentWillReact() {
-        console.log('>>> PersonTest will react');
-    }
     handleInputChange = (e) => {
         console.log(e.currentTarget.value);
         this.props.test.updatePersonName(e.currentTarget.value);
