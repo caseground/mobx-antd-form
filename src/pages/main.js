@@ -7,7 +7,6 @@ import hoistNonReactStatic from 'hoist-non-react-statics';
 import { observer, inject } from 'mobx-react';
 import './index.css';
 
-
 const form = Form.create({
     mapPropsToFields(props) {
         console.log('mapPropsToFields');
@@ -18,7 +17,7 @@ const form = Form.create({
         };
     },
     onFieldsChange(props, changedFields) {
-        console.log('changedFields', changedFields);
+        props.test.updatePersonName(changedFields.name.value);
     }
 });
 
@@ -38,24 +37,22 @@ const mockForm = function(WrappedComponent) {
 
 const fieldStore = {
     name: { value: '' }
-}
+};
 
 const mockInput = function(name) {
-
-    return (FormElement) => {
-        
+    return FormElement => {
         return React.cloneElement(FormElement, fieldStore[name]);
-    }
-}
+    };
+};
 
 @inject(({ test }) => ({ test }))
 @form
 @observer
 class PersonTest extends React.Component {
-    handleInputChange = (e) => {
+    handleInputChange = e => {
         console.log(e.currentTarget.value);
         this.props.test.updatePersonName(e.currentTarget.value);
-    }
+    };
     render() {
         const { getFieldDecorator } = this.props.form;
         console.log('render PersonTest', this.props);
@@ -65,12 +62,8 @@ class PersonTest extends React.Component {
         return (
             <div>
                 <div>{name}</div>
-                {
-                    getFieldDecorator('name')(<Input />)
-                }
-                {
-                    mockInput('name')(<Input onChange={this.handleInputChange} />)
-                }
+                {getFieldDecorator('name')(<Input />)}
+                {mockInput('name')(<Input onChange={this.handleInputChange} />)}
             </div>
         );
     }
