@@ -1,4 +1,4 @@
-# 工程配置来自 webpack_template
+# 工程配置来自 [webpack_template](https://github.com/devtemplate/webpack_template)
 
 # 问题描述
 
