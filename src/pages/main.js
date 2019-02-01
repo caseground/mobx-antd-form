@@ -46,9 +46,12 @@ const mockInput = function(name) {
     };
 };
 
-@inject(({ test }) => ({ 
-    name: test.person.name,
-    test: test
+@inject(({ test }) => ({
+    // 只传入 test 的话，会导致 props shallowCompare 不会产生想要的结果，所以
+    // 需要传入更细粒度的属性进来
+    // 注释掉 name, 只使用 test 则可以复现此 bug
+    name: test.person.name, 
+    test: test 
 }))
 @form
 @observer
@@ -75,9 +78,12 @@ class PersonTest extends React.Component {
 
         return (
             <div>
+                <div>
+                    name 的值会从<code>LiLei</code>变成<code>Xiaoming 1000</code>，但是 input 的值其实并未更新
+                    这就是 bug 所在了.
+                </div>
                 <div>{name}</div>
                 {getFieldDecorator('name')(<Input />)}
-                {mockInput('name')(<Input onChange={this.handleInputChange} />)}
             </div>
         );
     }
