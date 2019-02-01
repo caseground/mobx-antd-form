@@ -19,6 +19,7 @@ const form = Form.create({
     },
     onFieldsChange(props, changedFields) {
         console.log('changedFields', changedFields);
+        props.test.updatePersonName(changedFields.name.value);
     }
 });
 
@@ -57,7 +58,7 @@ class PersonTest extends React.Component {
         this.props.test.updatePersonName(e.currentTarget.value);
     }
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator, getFieldValue } = this.props.form;
         console.log('render PersonTest', this.props);
         let { person } = this.props.test;
         let name = person.name || '';
@@ -65,6 +66,7 @@ class PersonTest extends React.Component {
         return (
             <div>
                 <div>{name}</div>
+                <div>{getFieldValue('name')}</div>
                 {
                     getFieldDecorator('name')(<Input />)
                 }
