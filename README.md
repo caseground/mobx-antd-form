@@ -32,4 +32,16 @@ getFieldDecorator 重新包装 Input 实例的时候，出现了问题，导致�
 
 
 
+来自 Nadia 的猜测
 
+
+1. mapPropsToFields 和 onFieldsChange 类似于 get 和 set，map 完了 onFieldsChange 也要进行 dispatch，第一个问题就是开发者没有 dispatch，可参考 [redux 的用法](http://react-component.github.io/form/examples/redux.html)
+
+2. 即便做了第一步，会发现案例在初始化时仍然是异常的，这是因为 Mobx 为了把性能搞上去，重新写了componentWillReceiveProps 函数，所以被 observe 的组件，props 变了，并不会重新触发componentWillReceiveProps (除非是 observe 的整个 object 而不是 object 的某个属性变了)，但是rc-form的mapPropsToField 是写在 componentWillReceiveProps 里的, 这造成了某些时候（就是只有属性变了的时候），rc-form 无法从 componentWillReceiveProps 读取到 props 的更新。这或许是两者设计理念上的偏差。
+
+关于 Mobx 的这一点，可查看 [mobx issue](https://github.com/mobxjs/mobx-react/issues/281)
+
+
+**解决方案：**
+
+细粒化使其触发 componentWillReceiveProps 方法。
