@@ -24,6 +24,7 @@ store 更新的时候， input 的 value 无法联动更新。
 ### 2. 不使用getFieldDecorator，不采用 mapPropsToFields 方法，直接采用原始 Input
 
 # 导致出问题的原因猜测
+
 参考 [issue](https://github.com/mobxjs/mobx-react/issues/281)
 
 getFieldDecorator 重新包装 Input 实例的时候，出现了问题，导致无法被 mobx trace 到，因此无法被更新到位。
@@ -31,6 +32,7 @@ getFieldDecorator 重新包装 Input 实例的时候，出现了问题，导致�
 本质原因应该是 rc-form 的设计哲学和 mobx 的设计哲学不太一样导致的问题。这点待求证。
 
 
+--------------------------------------------
 
 来自 Nadia 的猜测
 
